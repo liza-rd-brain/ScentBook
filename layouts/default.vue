@@ -6,6 +6,10 @@
     <!-- Page Content -->
     <v-main>
       <slot />
+      <!-- <client-only>
+        <div id="modal-target"></div>
+      </client-only> -->
+
     </v-main>
 
     <!-- Footer -->
