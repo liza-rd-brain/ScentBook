@@ -1,28 +1,21 @@
 <template>
-    <div>
-      <!-- Header -->
-      <Header />
-  
-      <!-- Page Content -->
-      <Nuxt />
-  
-      <!-- Footer -->
-      <Footer />
-    </div>
-  </template>
-  
-  <script>
-  import Header from '@/components/Header.vue';
-  import Footer from '@/components/Footer.vue';
-  
-  export default {
-    components: {
-      Header,
-      Footer,
-    },
-  };
-  </script>
-  
-  <style>
-  /* Add global styles here if needed */
-  </style>
+  <v-app>
+    <!-- Header -->
+    <AppHeader />
+
+    <!-- Page Content -->
+    <slot />
+
+    <!-- Footer -->
+    <!-- <Footer /> -->
+  </v-app>
+</template>
+
+<script setup>
+import AppHeader from '@/components/AppHeader.vue';
+// import Footer from '@/components/Footer.vue';
+</script>
+
+<style>
+/* Add global styles here if needed */
+</style>

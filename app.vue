@@ -1,6 +1,10 @@
+<script setup lang="ts">
+// import HeaderApp from './components/HeaderApp.vue'
+
+</script>
+
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
