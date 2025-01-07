@@ -1,13 +1,21 @@
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     components,
     directives,
+    icons: {
+      defaultSet: 'mdi', // Set the default icon set to 'mdi'
+      aliases, // Use the default aliases
+      sets: {
+        mdi, // Register the mdi icon set
+      },
+    },
     theme: {
-      defaultTheme: 'light',
+      defaultTheme: 'dark',
       themes: {
         light: {
           colors: {

@@ -4,7 +4,9 @@
     <AppHeader />
 
     <!-- Page Content -->
-    <slot />
+    <v-main>
+      <slot />
+    </v-main>
 
     <!-- Footer -->
     <!-- <Footer /> -->
