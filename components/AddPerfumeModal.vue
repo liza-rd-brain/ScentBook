@@ -45,6 +45,10 @@
 import { ref } from 'vue';
 import { useWebsiteStore } from '@/stores/basicStore'
 import { Timestamp } from "firebase/firestore";
+import { useItemActions } from '@/composables/useItemActions';
+
+const { addItem } = useItemActions();
+
 // Define props
 defineProps({
     visible: {
@@ -53,6 +57,8 @@ defineProps({
     },
 });
 const store = useWebsiteStore()
+
+
 
 // из дочернего компонента можем тригернуть родительский коллбек
 const emit = defineEmits(['close']);
@@ -87,7 +93,7 @@ const addItemToStore = async () => {
 
 
 
-    await store.addItem({ item: newItem })
+    addItem(newItem)
 
     name.value = '';
     brand.value = '';

@@ -1,7 +1,9 @@
 <template>
     <v-app-bar class="custom-app-bar" :elevation="3">
         <template v-slot:prepend>
-            <v-img src="/perfume.png" width="40px" />
+            <NuxtLink to="/">
+                <v-img src="/perfume.png" width="40px" />
+            </NuxtLink>
         </template>
         <v-app-bar-title>ScentBook</v-app-bar-title>
     </v-app-bar>

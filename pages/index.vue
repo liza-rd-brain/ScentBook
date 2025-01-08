@@ -11,7 +11,6 @@
 
 <style scoped>
 div {
-  padding: 20px 60px;
   display: flex;
   flex-direction: column;
   justify-content: end;

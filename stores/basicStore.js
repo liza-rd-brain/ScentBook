@@ -77,10 +77,35 @@ export const useWebsiteStore = defineStore('websiteStore', {
       await addDoc(collection($firestore, 'items'), item);
       await this.fetchItemsInitial(); // Fetch updated items after adding
     },
-    async deleteItem(id) {
+    async editItem({ item }) {
       const { $firestore } = useNuxtApp();
-      await deleteDoc(doc($firestore, 'items', id));
-      await this.fetchItemsInitial(); // Fetch updated items after deleting
+
+      // Query to find the document with the custom ID
+      const q = query(collection($firestore, 'items'), where('id', '==', item.id));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref; // Get the document reference
+        await updateDoc(docRef, item); // Update the document
+        await this.fetchItems(); // Refresh the local state
+      } else {
+        console.warn('No such document!');
+      }
+    },
+    async deleteItem({ customId }) {
+      const { $firestore } = useNuxtApp();
+
+      // Query to find the document with the custom ID
+      const q = query(collection($firestore, 'items'), where('id', '==', Number(customId)));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref; // Get the document reference
+        await deleteDoc(docRef); // Delete the document
+        await this.fetchItems(); // Refresh the local state
+      } else {
+        console.warn('No such document!');
+      }
     },
   },
   getters: {

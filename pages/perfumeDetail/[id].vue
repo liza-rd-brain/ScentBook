@@ -1,7 +1,12 @@
 <template>
     <v-app>
         <v-container>
+
+
             <v-card hover variant="outlined" class="hover-outlined">
+                <v-container className="editButton">
+                    <v-btn icon="mdi-pencil" size="small" @click="openAddPerfumeModal"></v-btn>
+                </v-container>
                 <template v-slot:title>Наименование: {{ displayItem.name }}</template>
                 <template v-slot:subtitle>Бренд: {{ displayItem.brand }}</template>
                 <v-col> Парфюмер: {{ displayItem.perfumer }}</v-col>
@@ -49,6 +54,12 @@ const item = computed(() => {
 
 const displayItem = computed(() => websiteStore.currItem || item.value);
 
-
-
 </script>
+
+<style scoped>
+.editButton {
+    position: absolute;
+    right: 10px;
+    top: 10px
+}
+</style>

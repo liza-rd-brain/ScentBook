@@ -30,6 +30,6 @@ const closeModal = () => {
 div {
     display: flex;
     align-items: end;
-    padding: 20px 20px;
+    padding: 20px 0px;
 }
 </style>
