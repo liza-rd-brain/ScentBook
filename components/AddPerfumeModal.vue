@@ -3,7 +3,7 @@
         <div v-if="visible" class="modal-overlay">
             <div class="modal-content">
 
-                <v-card class="mx-auto" max-width="344" title="User Registration">
+                <v-card class="mx-auto" min-width="300" title="">
                     <v-btn class="close-button" icon @click="closeModal" variant="plain">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
@@ -19,11 +19,11 @@
                         <v-text-field v-model="mainAccords" color="primary" label="Основные ноты"
                             variant="underlined"></v-text-field>
 
-                        <v-text-field v-model="Perfumer" color="primary" label="Парфюмер"
+                        <v-text-field v-model="perfumer" color="primary" label="Парфюмер"
                             variant="underlined"></v-text-field>
+                        <v-text-field v-model="link" color="primary" label="Ссылка" variant="underlined"></v-text-field>
 
-                        <v-checkbox v-model="terms" color="secondary"
-                            label="I agree to site terms and conditions"></v-checkbox>
+                        <v-checkbox v-model="terms" color="secondary" label="добавить на мою полку"></v-checkbox>
                     </v-container>
 
                     <v-divider></v-divider>
@@ -31,7 +31,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
 
-                        <v-btn color="success">
+                        <v-btn color="success" @click="addItemToStore">
                             добавить в коллекцию
                         </v-btn>
                     </v-card-actions>
@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import { useWebsiteStore } from '@/stores/basicStore'
 // Define props
 defineProps({
     visible: {
@@ -51,21 +51,56 @@ defineProps({
         required: true,
     },
 });
+const store = useWebsiteStore()
 
 // из дочернего компонента можем тригернуть родительский коллбек
 const emit = defineEmits(['close']);
 
 // Form data
-const first = ref(null);
-const last = ref(null);
-const email = ref(null);
-const password = ref(null);
+const name = ref(null);
+const brand = ref(null);
+const fragranceFamily = ref(null);
+const mainAccords = ref(null);
+const perfumer = ref(null);
+const link = ref(null);
 const terms = ref(false);
 
 // Function to close the modal
 const closeModal = () => {
     emit('close');
 };
+
+const addItemToStore = async () => {
+    const newItem = {
+        id: Date.now(), // Generate a unique ID (you can use a library like `uuid` for better IDs)
+        name: name.value,
+        brand: brand.value,
+        fragranceFamily: fragranceFamily.value,
+        mainAccords: mainAccords.value,
+        perfumer: perfumer.value,
+        link: link.value,
+        terms: terms.value,
+    };
+
+    debugger;
+    console.log({ newItem })
+
+    // Add the item to the Pinia store
+    // itemsStore.addItem(newItem);
+    await store.addItem({ item: newItem })
+    // Reset form fields
+    name.value = '';
+    brand.value = '';
+    fragranceFamily.value = '';
+    mainAccords.value = '';
+    perfumer.value = '';
+    link.value = '';
+    terms.value = false;
+
+    // Close the modal
+    closeModal();
+};
+
 </script>
 
 <style scoped>

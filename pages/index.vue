@@ -4,6 +4,9 @@
     <AddPerfume />
   </div>
 
+  <PerfumeList />
+
+
 </template>
 
 <style scoped>
