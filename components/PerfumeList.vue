@@ -10,32 +10,27 @@
                     <v-col> Основные ноты: {{ item.mainAccords }}</v-col>
                     <v-col> {{ item.mainAccords }}</v-col>
                     <v-divider v-if="index !== itemList.length - 1"></v-divider>
-
                 </v-list-item>
-
             </v-list>
         </v-container>
     </v-app>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { computed } from 'vue';
 import { useWebsiteStore } from '~/stores/basicStore';
 
 const websiteStore = useWebsiteStore();
-const { items, fetchItems, addItem, deleteItem } = websiteStore;
+const { fetchItems, items } = websiteStore;
 
-
-console.log({ items })
-const isMounted = ref(false)
-const itemList = computed(() => websiteStore.items);
-console.log({ length: itemList.value.length, value: itemList.value })
-// Fetch items when the component is mounted
-onMounted(() => {
-    fetchItems();
-    isMounted.value = true;
-    itemList.value = items;
+// Fetch items using useAsyncData (SSR)
+await useAsyncData('items', async () => {
+    await fetchItems(); // Fetch items from the store
+    return websiteStore.items; // Return the items from the store
 });
 
+// Use a computed property to access the items (reactive updates)
+const itemList = computed(() => websiteStore.items);
 
+console.log({ itemList: itemList.value }); // Debugging: Check initial items
 </script>

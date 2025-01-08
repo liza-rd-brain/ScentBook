@@ -9,6 +9,7 @@ export const useWebsiteStore = defineStore('websiteStore', {
   }),
   actions: {
     async fetchItems() {
+      debugger;
       const { $firestore } = useNuxtApp(); // Access the Firestore instance
       try {
         const querySnapshot = await getDocs(collection($firestore, 'items'));

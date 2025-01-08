@@ -1,9 +1,7 @@
 <template>
   <div>
     <AddPerfume />
-    <client-only>
-      <PerfumeList />
-    </client-only>
+    <PerfumeList />
 
   </div>
 
