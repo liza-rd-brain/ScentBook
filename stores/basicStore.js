@@ -50,9 +50,10 @@ export const useWebsiteStore = defineStore('websiteStore', {
       await addDoc(collection($firestore, 'items'), item);
       await this.fetchItemsInitial(); // Fetch updated items after adding
     },
-    async deleteItem({ dispatch }, id) {
-      await deleteDoc(doc(db, 'items', id));
-      dispatch('fetchItems');
+    async deleteItem(id) {
+      const { $firestore } = useNuxtApp();
+      await deleteDoc(doc($firestore, 'items', id));
+      await this.fetchItemsInitial(); // Fetch updated items after deleting
     },
   },
 })
