@@ -84,13 +84,11 @@ const addItemToStore = async () => {
         createdAt: Timestamp.now(),  // Automatically adds the server timestamp
     };
 
-    debugger;
-    console.log({ newItem })
 
-    // Add the item to the Pinia store
-    // itemsStore.addItem(newItem);
+
+
     await store.addItem({ item: newItem })
-    // Reset form fields
+
     name.value = '';
     brand.value = '';
     fragranceFamily.value = '';

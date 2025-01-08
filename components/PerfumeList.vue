@@ -3,7 +3,7 @@
         <v-container>
             <v-list lines="three">
                 <v-list-item v-for="(item, index) in itemList" :key="item.id">
-                    <NuxtLink :to="{ name: 'perfumeDetail-id', params: { id: item.id } }">
+                    <NuxtLink :to="{ name: 'perfumeDetail-id', params: { id: item.id } }" class="next_link">
                         <v-card hover variant="outlined" class="hover-outlined">
                             <template v-slot:title>Наименование: {{ item.name }}</template>
                             <template v-slot:subtitle>Бренд: {{ item.brand }}</template>
@@ -30,20 +30,23 @@ const websiteStore = useWebsiteStore();
 // Fetch items using useAsyncData (SSR)
 await useAsyncData('items', async () => {
     await websiteStore.fetchItemsInitial(); // Fetch items from the store
-    console.log("Fetch items from the store")
-    return websiteStore.items; // Return the items from the store
+
 });
 
 // Use a computed property to access the items (reactive updates)
 const itemList = computed(() => websiteStore.items);
 
-console.log({ itemList: itemList.value }); // Debugging: Check initial items
 </script>
 
 <style scoped>
+.next_link {
+    text-decoration: none !important;
+}
+
 .hover-outlined {
     border: 1px solid transparent;
     transition: border-color 0.3s ease;
+
 }
 
 .hover-outlined:hover {

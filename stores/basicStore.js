@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, limit } from 'firebase/firestore';
-
+import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, query, orderBy, limit, where } from 'firebase/firestore';
 import { useNuxtApp } from '#app';
 
 export const useWebsiteStore = defineStore('websiteStore', {
   state: () => ({
     items: [], // Array to store items
+    currItem: null
   }),
   actions: {
     async fetchItemsInitial() {
@@ -24,7 +24,6 @@ export const useWebsiteStore = defineStore('websiteStore', {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log('Fetched last 5 items:', this.items); // Debugging: Check fetched items
       } catch (error) {
         console.error('Error fetching initial items:', error);
       }
@@ -38,9 +37,37 @@ export const useWebsiteStore = defineStore('websiteStore', {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log('Fetched items:', this.items); // Debugging: Check fetched items
+
       } catch (error) {
         console.error('Error fetching items:', error);
+      }
+    },
+    async fetchItemByCustomId(customId) {
+
+      const { $firestore } = useNuxtApp(); // Access the Firestore instance
+      try {
+        // Create a query to find the document with the custom `id` field
+        const q = query(collection($firestore, 'items'), where('id', '==', Number(customId)));
+
+        // Execute the query
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // If the document exists, return its data
+          const docSnap = querySnapshot.docs[0]; // Get the first matching document
+          this.currItem = {
+            id: docSnap.id, // Firestore document ID
+            ...docSnap.data(), // Document data
+          };
+          return item;
+        } else {
+          // If no document matches the query, log a warning and return null
+          console.warn('No such document!');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error fetching item:', error);
+        return null;
       }
     },
     async addItem({ item }) {
@@ -54,6 +81,18 @@ export const useWebsiteStore = defineStore('websiteStore', {
       const { $firestore } = useNuxtApp();
       await deleteDoc(doc($firestore, 'items', id));
       await this.fetchItemsInitial(); // Fetch updated items after deleting
+    },
+  },
+  getters: {
+    // Find an item by ID in the store
+    findItemById: (state) => (itemId) => {
+      const existingItem = state.items.find((item) => item.id === itemId);
+      if (existingItem) {
+        return existingItem;
+      } else {
+        console.warn('Item not found in store!'); // Debugging: Log if item is not found
+        return null;
+      }
     },
   },
 })
