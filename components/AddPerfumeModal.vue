@@ -56,8 +56,6 @@ defineProps({
         required: true,
     },
 });
-const store = useWebsiteStore()
-
 
 
 // из дочернего компонента можем тригернуть родительский коллбек
@@ -89,8 +87,6 @@ const addItemToStore = async () => {
         terms: terms.value,
         createdAt: Timestamp.now(),  // Automatically adds the server timestamp
     };
-
-
 
 
     addItem(newItem)

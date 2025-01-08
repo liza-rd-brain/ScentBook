@@ -4,9 +4,6 @@
     <PerfumeList />
   </div>
 
-
-
-
 </template>
 
 <style scoped>

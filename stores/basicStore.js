@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, query, orderBy, limit, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, query, updateDoc, orderBy, limit, where } from 'firebase/firestore';
 import { useNuxtApp } from '#app';
+
 
 export const useWebsiteStore = defineStore('websiteStore', {
   state: () => ({
@@ -8,6 +9,10 @@ export const useWebsiteStore = defineStore('websiteStore', {
     currItem: null
   }),
   actions: {
+
+    setCurrItem(item) {
+      this.currItem = item
+    },
     async fetchItemsInitial() {
       const { $firestore } = useNuxtApp(); // Access the Firestore instance
       try {
@@ -80,29 +85,31 @@ export const useWebsiteStore = defineStore('websiteStore', {
     async editItem({ item }) {
       const { $firestore } = useNuxtApp();
 
-      // Query to find the document with the custom ID
       const q = query(collection($firestore, 'items'), where('id', '==', item.id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const docRef = querySnapshot.docs[0].ref; // Get the document reference
         await updateDoc(docRef, item); // Update the document
-        await this.fetchItems(); // Refresh the local state
+
+        await this.fetchItemByCustomId(item.id); // Refresh the local state
+
       } else {
         console.warn('No such document!');
       }
     },
-    async deleteItem({ customId }) {
+    async deleteItem({ item }) {
       const { $firestore } = useNuxtApp();
 
       // Query to find the document with the custom ID
-      const q = query(collection($firestore, 'items'), where('id', '==', Number(customId)));
+      const q = query(collection($firestore, 'items'), where('id', '==', item.id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const docRef = querySnapshot.docs[0].ref; // Get the document reference
         await deleteDoc(docRef); // Delete the document
         await this.fetchItems(); // Refresh the local state
+
       } else {
         console.warn('No such document!');
       }
