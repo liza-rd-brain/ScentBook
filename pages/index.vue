@@ -1,20 +1,23 @@
 <template>
   <div>
-    <h2>добавим новый парфюм</h2>
     <AddPerfume />
+    <client-only>
+      <PerfumeList />
+    </client-only>
+
   </div>
 
-  <PerfumeList />
+
 
 
 </template>
 
 <style scoped>
 div {
-  padding: 40px;
+  padding: 20px 60px;
   display: flex;
-  flex-direction: row;
-  justify-content: start;
+  flex-direction: column;
+  justify-content: end;
   gap: 20px
 }
 </style>

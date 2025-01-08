@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <v-container>
         <!-- Button to open the modal -->
         <v-btn icon="mdi-plus" size="small" @click="openAddPerfumeModal"></v-btn>
 
         <!-- AddPerfumeModal component -->
         <AddPerfumeModal :visible="isModalOpen" @close="closeModal" />
-    </div>
+    </v-container>
 </template>
 
 <script setup>
@@ -25,3 +25,11 @@ const closeModal = () => {
     isModalOpen.value = false;
 };
 </script>
+
+<style scoped>
+div {
+    display: flex;
+    align-items: end;
+    padding: 20px 20px;
+}
+</style>
