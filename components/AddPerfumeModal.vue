@@ -44,6 +44,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useWebsiteStore } from '@/stores/basicStore'
+import { Timestamp } from "firebase/firestore";
 // Define props
 defineProps({
     visible: {
@@ -80,6 +81,7 @@ const addItemToStore = async () => {
         perfumer: perfumer.value,
         link: link.value,
         terms: terms.value,
+        createdAt: Timestamp.now(),  // Automatically adds the server timestamp
     };
 
     debugger;

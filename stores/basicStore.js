@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, limit } from 'firebase/firestore';
 
 import { useNuxtApp } from '#app';
 
@@ -8,6 +8,27 @@ export const useWebsiteStore = defineStore('websiteStore', {
     items: [], // Array to store items
   }),
   actions: {
+    async fetchItemsInitial() {
+      const { $firestore } = useNuxtApp(); // Access the Firestore instance
+      try {
+        debugger;
+        // Query to fetch the last 5 items sorted by createdAt (descending)
+        const q = query(
+          collection($firestore, 'items'),
+          orderBy('createdAt', 'desc'),
+          limit(5)
+        );
+
+        const querySnapshot = await getDocs(q);
+        this.items = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log('Fetched last 5 items:', this.items); // Debugging: Check fetched items
+      } catch (error) {
+        console.error('Error fetching initial items:', error);
+      }
+    },
     async fetchItems() {
       debugger;
       const { $firestore } = useNuxtApp(); // Access the Firestore instance
@@ -27,7 +48,7 @@ export const useWebsiteStore = defineStore('websiteStore', {
       const { $firestore } = useNuxtApp();
       console.log({ item })
       await addDoc(collection($firestore, 'items'), item);
-      await this.fetchItems(); // Fetch updated items after adding
+      await this.fetchItemsInitial(); // Fetch updated items after adding
     },
     async deleteItem({ dispatch }, id) {
       await deleteDoc(doc(db, 'items', id));

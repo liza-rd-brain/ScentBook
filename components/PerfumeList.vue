@@ -21,11 +21,12 @@ import { computed } from 'vue';
 import { useWebsiteStore } from '~/stores/basicStore';
 
 const websiteStore = useWebsiteStore();
-const { fetchItems, items } = websiteStore;
+
 
 // Fetch items using useAsyncData (SSR)
 await useAsyncData('items', async () => {
-    await fetchItems(); // Fetch items from the store
+    await websiteStore.fetchItemsInitial(); // Fetch items from the store
+    console.log("Fetch items from the store")
     return websiteStore.items; // Return the items from the store
 });
 

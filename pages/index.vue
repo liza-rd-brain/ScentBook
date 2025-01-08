@@ -2,7 +2,6 @@
   <div>
     <AddPerfume />
     <PerfumeList />
-
   </div>
 
 
