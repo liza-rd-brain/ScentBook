@@ -7,7 +7,7 @@ export function useItemActions() {
 
     const addItem = async (itemData: any) => {
         const newItem = {
-            id: Date.now(), // Generate a unique ID (you can use a library like `uuid` for better IDs)
+            id: Date.now(),
             ...itemData,
             createdAt: Timestamp.now(),
         };
@@ -22,16 +22,11 @@ export function useItemActions() {
             updatedAt: Timestamp.now(),
         };
 
-        console.log({ updatedItem })
-
         await store.editItem({ item: updatedItem });
     };
 
     const deleteItem = async (itemData: any, router: any) => {
-        debugger;
-        console.log({ router })
         await store.deleteItem({ item: itemData });
-
     };
 
 

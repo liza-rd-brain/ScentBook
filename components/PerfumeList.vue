@@ -27,13 +27,12 @@ import { useWebsiteStore } from '~/stores/basicStore';
 const websiteStore = useWebsiteStore();
 
 
-// Fetch items using useAsyncData (SSR)
+// SSR запрос
 await useAsyncData('items', async () => {
-    await websiteStore.fetchItemsInitial(); // Fetch items from the store
+    await websiteStore.fetchItemsInitial();
 
 });
 
-// Use a computed property to access the items (reactive updates)
 const itemList = computed(() => websiteStore.items);
 
 </script>

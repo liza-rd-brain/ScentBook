@@ -32,17 +32,16 @@ const isEditing = ref(false);
 
 
 
-// Fetch data during SSR or fall back to client-side fetching
 await useAsyncData(
-    'item', // Unique key for caching
+    'item', // уникальный ключ для кеширования
     async () => {
         const itemId = Number(route.params.id);
 
-        // Check if the item already exists in the store
+        // если item уже есть в сторе
         const existingItem = websiteStore.findItemById(itemId);
         if (existingItem) {
             websiteStore.setCurrItem(existingItem)
-            return existingItem; // Use the item from the store
+            return existingItem;
         }
 
         const { data } = await websiteStore.fetchItemByCustomId(itemId);
@@ -52,14 +51,12 @@ await useAsyncData(
 
 
 
-// Use a computed property to access the item reactively
+//реактивное изменение квери
 const item = computed(() => {
     const itemId = route.params.id;
     return websiteStore.findItemById(itemId)
 });
 
-
-console.log({ currItem: websiteStore.currItem })
 
 const displayItem = computed(() => websiteStore.currItem || item.value);
 

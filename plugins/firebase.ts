@@ -1,6 +1,7 @@
-// plugins/firebase.ts
+
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { defineNuxtPlugin } from 'nuxt/app';
 
 export default defineNuxtPlugin(() => {
     const firebaseConfig = {
@@ -12,11 +13,9 @@ export default defineNuxtPlugin(() => {
         appId: "1:1023901114380:web:6c291d4a56cbe36fef8e29",
     };
 
-    // Initialize Firebase
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    // Provide the Firestore instance to the Nuxt app
     return {
         provide: {
             firestore: db,

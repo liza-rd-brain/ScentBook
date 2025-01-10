@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, query, updateDoc, orderBy, limit, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, query, updateDoc, orderBy, limit, where } from
+  'firebase/firestore';
 import { useNuxtApp } from '#app';
 
 
 export const useWebsiteStore = defineStore('websiteStore', {
   state: () => ({
-    items: [], // Array to store items
+    items: [],
     currItem: null
   }),
   actions: {
@@ -14,10 +15,9 @@ export const useWebsiteStore = defineStore('websiteStore', {
       this.currItem = item
     },
     async fetchItemsInitial() {
-      const { $firestore } = useNuxtApp(); // Access the Firestore instance
+      const { $firestore } = useNuxtApp();
       try {
-        debugger;
-        // Query to fetch the last 5 items sorted by createdAt (descending)
+
         const q = query(
           collection($firestore, 'items'),
           orderBy('createdAt', 'desc'),
@@ -34,8 +34,7 @@ export const useWebsiteStore = defineStore('websiteStore', {
       }
     },
     async fetchItems() {
-      debugger;
-      const { $firestore } = useNuxtApp(); // Access the Firestore instance
+      const { $firestore } = useNuxtApp();
       try {
         const querySnapshot = await getDocs(collection($firestore, 'items'));
         this.items = querySnapshot.docs.map((doc) => ({
@@ -49,24 +48,24 @@ export const useWebsiteStore = defineStore('websiteStore', {
     },
     async fetchItemByCustomId(customId) {
 
-      const { $firestore } = useNuxtApp(); // Access the Firestore instance
+      const { $firestore } = useNuxtApp();
       try {
-        // Create a query to find the document with the custom `id` field
+
         const q = query(collection($firestore, 'items'), where('id', '==', Number(customId)));
 
-        // Execute the query
+
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          // If the document exists, return its data
-          const docSnap = querySnapshot.docs[0]; // Get the first matching document
+
+          const docSnap = querySnapshot.docs[0];
           this.currItem = {
-            id: docSnap.id, // Firestore document ID
-            ...docSnap.data(), // Document data
+            id: docSnap.id,
+            ...docSnap.data(),
           };
           return item;
         } else {
-          // If no document matches the query, log a warning and return null
+
           console.warn('No such document!');
           return null;
         }
@@ -76,11 +75,9 @@ export const useWebsiteStore = defineStore('websiteStore', {
       }
     },
     async addItem({ item }) {
-      debugger;
       const { $firestore } = useNuxtApp();
-      console.log({ item })
       await addDoc(collection($firestore, 'items'), item);
-      await this.fetchItemsInitial(); // Fetch updated items after adding
+      await this.fetchItemsInitial();
     },
     async editItem({ item }) {
       const { $firestore } = useNuxtApp();
@@ -89,11 +86,10 @@ export const useWebsiteStore = defineStore('websiteStore', {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const docRef = querySnapshot.docs[0].ref; // Get the document reference
-        await updateDoc(docRef, item); // Update the document
+        const docRef = querySnapshot.docs[0].ref;
+        await updateDoc(docRef, item);
 
-        await this.fetchItemByCustomId(item.id); // Refresh the local state
-
+        await this.fetchItemByCustomId(item.id);
       } else {
         console.warn('No such document!');
       }
@@ -101,14 +97,13 @@ export const useWebsiteStore = defineStore('websiteStore', {
     async deleteItem({ item }) {
       const { $firestore } = useNuxtApp();
 
-      // Query to find the document with the custom ID
       const q = query(collection($firestore, 'items'), where('id', '==', item.id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const docRef = querySnapshot.docs[0].ref; // Get the document reference
-        await deleteDoc(docRef); // Delete the document
-        await this.fetchItems(); // Refresh the local state
+        const docRef = querySnapshot.docs[0].ref;
+        await deleteDoc(docRef);
+        await this.fetchItems();
 
       } else {
         console.warn('No such document!');
@@ -116,13 +111,12 @@ export const useWebsiteStore = defineStore('websiteStore', {
     },
   },
   getters: {
-    // Find an item by ID in the store
     findItemById: (state) => (itemId) => {
       const existingItem = state.items.find((item) => item.id === itemId);
       if (existingItem) {
         return existingItem;
       } else {
-        console.warn('Item not found in store!'); // Debugging: Log if item is not found
+        console.warn('Item not found in store!');
         return null;
       }
     },

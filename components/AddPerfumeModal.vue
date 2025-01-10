@@ -49,7 +49,7 @@ import { useItemActions } from '@/composables/useItemActions';
 
 const { addItem } = useItemActions();
 
-// Define props
+
 defineProps({
     visible: {
         type: Boolean,
@@ -61,7 +61,6 @@ defineProps({
 // из дочернего компонента можем тригернуть родительский коллбек
 const emit = defineEmits(['close']);
 
-// Form data
 const name = ref(null);
 const brand = ref(null);
 const fragranceFamily = ref(null);
@@ -70,14 +69,13 @@ const perfumer = ref(null);
 const link = ref(null);
 const terms = ref(false);
 
-// Function to close the modal
 const closeModal = () => {
     emit('close');
 };
 
 const addItemToStore = async () => {
     const newItem = {
-        id: Date.now(), // Generate a unique ID (you can use a library like `uuid` for better IDs)
+        id: Date.now(),
         name: name.value,
         brand: brand.value,
         fragranceFamily: fragranceFamily.value,
@@ -85,7 +83,7 @@ const addItemToStore = async () => {
         perfumer: perfumer.value,
         link: link.value,
         terms: terms.value,
-        createdAt: Timestamp.now(),  // Automatically adds the server timestamp
+        createdAt: Timestamp.now(),
     };
 
 
@@ -99,7 +97,6 @@ const addItemToStore = async () => {
     link.value = '';
     terms.value = false;
 
-    // Close the modal
     closeModal();
 };
 
@@ -113,12 +110,10 @@ const addItemToStore = async () => {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* Ensure it's above other content */
 }
 
 .modal-content {
@@ -133,6 +128,5 @@ const addItemToStore = async () => {
     top: 10px;
     right: 10px;
     z-index: 1001;
-    /* Ensure it's above the modal content */
 }
 </style>

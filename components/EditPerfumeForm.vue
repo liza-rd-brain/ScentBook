@@ -73,7 +73,7 @@ const editPerfume = async () => {
         perfumer: perfumer.value,
         link: link.value,
         terms: terms.value,
-        updatedAt: Timestamp.now(),  // Automatically adds the server timestamp
+        updatedAt: Timestamp.now(),
     };
 
 
