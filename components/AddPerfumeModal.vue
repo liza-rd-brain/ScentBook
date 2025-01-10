@@ -43,7 +43,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useWebsiteStore } from '@/stores/basicStore'
 import { Timestamp } from "firebase/firestore";
 import { useItemActions } from '@/composables/useItemActions';
 

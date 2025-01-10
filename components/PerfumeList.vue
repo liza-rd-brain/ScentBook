@@ -10,7 +10,6 @@
                             <v-col> Парфюмер: {{ item.perfumer }}</v-col>
                             <v-col> Направление: {{ item.fragranceFamily }}</v-col>
                             <v-col> Основные ноты: {{ item.mainAccords }}</v-col>
-                            <v-col> {{ item.mainAccords }}</v-col>
                             <v-divider v-if="index !== itemList.length - 1"></v-divider>
                         </v-card>
                     </NuxtLink>
@@ -29,8 +28,7 @@ const websiteStore = useWebsiteStore();
 
 // SSR запрос
 await useAsyncData('items', async () => {
-    await websiteStore.fetchItemsInitial();
-
+    return await websiteStore.fetchItemsInitial();
 });
 
 const itemList = computed(() => websiteStore.items);
